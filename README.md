@@ -1,2 +1,2 @@
-# javascript_17_parallax-effect
+# javascript_17_preloader
 At work
