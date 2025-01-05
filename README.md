@@ -1,2 +1,279 @@
-# javascript_17_preloader
-At work
+# Прелоадер - экран загрузки
+
+Источник: видео "Как сделать прелоадер? ► CSS/JS" 
+https://vkvideo.ru/video-101965347_456276135?entrypoint=list_all
+
+1. создаем создаем файлы index.html, style.css (в папке css), script.js (в папке js) в папке проекта.
+   Скачиваем готовые шаблоны изображений (в папку img) и файл js (положить в папку js) и вставляем в папку проекта:
+
+
+2. в файле index.html готовим шаблон
+
+```html
+<!-- Сообщаем браузеру, как стоит обрабатывать эту страницу -->
+<!DOCTYPE html>
+<!-- Оболочка документа, указываем язык содержимого -->
+<html lang="ru">
+<!-- Заголовок страницы, контейнер для других важных данных (не отображается) -->
+<head>
+    <!-- Заголовок страницы в браузере -->
+    <title></title>
+    <!-- Подключаем CSS -->
+    <link rel="stylesheet" href="css/style.css">
+    <!-- Кодировка страницы -->
+    <meta charset="utf-8">
+    <!-- Адаптив -->
+    <meta name="viewport" content="width=device-width">
+</head>
+<!-- Отображаемое тело страницы -->
+<body>
+<!-- Оболочка для демонстрации -->
+<div class="wrapper">
+    <!-- Контент -->
+
+    <!-- Подключаем jQuery -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <!-- Подключаем файл JS скриптов -->
+    <script src="js/script.js"></script>
+</div>
+</body>
+</html>
+```
+
+3. в файле style.css вставляем шаблон
+
+```css
+/* Обнуление */
+*,*:before,*:after{
+   padding: 0;
+   margin: 0;
+   border: 0;
+   box-sizing: border-box;
+}
+/* Стили для демонстрации */
+html,body{
+   height: 100%;
+   background-color: #333;
+   font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+   color: #fff;
+   font-size: 25px;
+}
+.wrapper{
+   height: 100%;
+   padding: 50px;
+}
+/* Основные стили */
+```
+
+4. в файл script.js без шаблона
+
+```js
+
+```
+
+5. в файле index.html вставляем название проекта
+
+```html
+<title>Прелоадер</title>
+```
+
+6. в файле index.html добавляем классы для прелоадера
+
+```html
+<div class="preloader">
+    <div class="loader"></div>
+</div>
+```
+
+7. в файле style.css стилизуем прелоадер
+
+```css
+.preloader{
+    position: fixed; /* Чтобы окно загрузки распологалось в зависимости от страницы, а не от элементов на странице */
+    left: 0;
+    top: 0;
+    width: 100%; /* Чтобы окно загрузки занимало всю ширину и высоту нашего окна */
+    height: 100%;
+    background: black;
+    z-index: 3; /* Чтобы не было видно наших элементов. Можно повысить z-index, если не перекрывает элементы */
+
+    .loader{ /* Будет простая анимация, пока страница не загрузится */
+        width: 75px;
+        height: 75px;
+        border: 10px solid #fff;
+        border-radius: 50%; /* Круглой формоы */
+        border-top-color: blue;
+        position: absolute; /* Разместить по центру прелоадер */
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+    }
+}
+```
+
+8. в файле style.css создаем анимацию прелоадера
+
+```css
+@keyframes spin {
+    from {
+        transform: translate(-50%, -50%) rotate(0deg);
+    }
+    to {
+        transform: translate(-50%, -50%) rotate(360deg);
+    }
+}
+```
+и добавляем строку с анимацией в стилизованный ранее класс .loader
+```css
+animation: spin 2s linear infinite;
+/* Анимация: название spin, время анимации 2 секунды (если меньше - ускорится анимация) */
+/* infinite - количество воспроизведений, linear - тайм-функция */
+```
+и добавляем строку с анимацией в стилизованный ранее класс .preloader
+```css
+transition: 1s all; /* 1 секунда на все свойства */
+opacity: 1;
+visibility: visible;
+``` 
+создаем класс в уже созданном классе .preloader
+```css
+&.done{  /* Чтобы при загрузке страницы, гифка с прелоадером исчезла */
+   opacity: 0;
+   visibility: hidden;
+}
+```
+
+9. в файле script.js чтобы прелоадер загружался первым
+
+```js
+document.body.onload = function() {
+   setTimeout(function() {
+      var preloader = document.getElementById('page-preloader');
+      // Нужен идентификатор, поэтому в html добавляем его к div preloader
+      if (preloader.classList.contains('done')) {
+         // Если в preloader в его classList нет класса done, то мы его добавляем
+         preloader.classList.add('done');
+      }
+   }, 1000); // Чтобы грузилось быстрее - 1 секунда
+}
+```
+добавляем идентификатор (id) к preloader в div, чтобы js нашел его
+```html
+<div id="page-preloader" class="preloader">
+   <div class="loader"></div>
+</div>
+```
+
+10. в файле script.js чтобы прелоадер загружался первым
+
+```js
+document.body.onload = function() {
+   setTimeout(function() {
+      var preloader = document.getElementById('page-preloader');
+      // Нужен идентификатор, поэтому в html добавляем его к div preloader
+      if (preloader.classList.contains('done')) {
+         // Если в preloader в его classList нет класса done, то мы его добавляем
+         preloader.classList.add('done');
+      }
+   }, 1000); // Чтобы грузилось быстрее - 1 секунда
+}
+```
+добавляем идентификатор (id) к preloader в div, чтобы js нашел его
+```html
+<div id="page-preloader" class="preloader">
+   <div class="loader"></div>
+</div>
+```
+
+# ПРЕЛОАДЕР ГОТОВ. Дальше делаем его красивее, чтобы отображалась картинка и процент загрузки
+
+11. в файле index.html добавляем span в строку с div класса loader
+
+```html
+<span id="load_perc"></span>
+```
+
+12. в файле index.html меняем название класса с "preloader" на "preloader-2"
+
+```html
+<div id="page-preloader" class="preloader-2">
+```
+
+13. в файле style.css стилизуем preloader-2. Гифку скачиваем любую.
+
+```css
+.preloader-2{
+   position: fixed; /* Чтобы окно загрузки распологалось в зависимости от страницы, а не от элементов на странице */
+   left: 0;
+   top: 0;
+   width: 100%; /* Чтобы окно загрузки занимало всю ширину и высоту нашего окна */
+   height: 100%;
+   background: black;
+   z-index: 3; /* Чтобы не было видно наших элементов. Можно повысить z-index, если не перекрывает элементы */
+   transition: 1s all; /* 1 секунда на все свойства */
+   opacity: 1;
+   visibility: visible;
+   background: url("../img/loading.gif") center center no-repeat; /* Чтобы не повторялся и централизовывался */
+   background-color: #1E1E1E; /* Фон вокруг гифки */
+
+   .loader{ /* Будет простая анимация, пока страница не загрузится */
+      width: 100%; /* ЧТобы влезли 100% */
+      height: 75px;
+      line-height: 75px;
+      text-align: center;
+      position: fixed; /* Разместить по центру прелоадер */
+      left: 50%;
+      top: 35%; /* Можно по центру (50%), но будет перекрывать собой гифку */
+      transform: translate(-50%, -50%);
+      font-size: 75px; /* Размер шрифта */
+   }
+
+   &.done{  /* Чтобы при загрузке страницы, гифка с прелоадером исчезла */
+      opacity: 0;
+      visibility: hidden;
+   }
+}
+```
+
+14. в файле script.js закомментировать старый код, чтобы не удалять.
+
+15. в файле script.js. Заранее отследить время загрузки картинок на сайте
+
+```js
+var
+        images = document.images,
+        images_total_count = images.length,
+        images_loaded_count = 0;
+```
+
+16. в файле script.js
+
+```js
+var
+        images = document.images,
+        images_total_count = images.length,
+        images_loaded_count = 0,
+        preloader = document.getElementById('page-preloader'),
+        perc_display = document.getElementById('load_perc');
+
+for (var i = 0; i < images_total_count; i++ ) {
+   image_clone = new Image();
+   image_clone.onload = image_loaded;
+   image_clone.onerror = image_loaded;
+   image_clone.src = images[i].src;
+}
+
+function image_loaded() { // При загрузке до 100%, окно загрузки исчезнет
+   images_loaded_count++;
+   perc_display.innerHTML = (( ( 100 / images_total_count ) * images_loaded_count ) << 0) + '%';
+   // Чтобы при делении не было дробных чисел
+
+   if( images_loaded_count >= images_total_count ) {
+      setTimeout(function() {
+         if( !preloader.classList.contains('done')) {
+            preloader.classList.add('done');
+         }
+      }, 1000);
+   }
+}
+```
