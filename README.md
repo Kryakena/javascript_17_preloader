@@ -1,7 +1,14 @@
-# Прелоадер - экран загрузки
+# ⚙ Прелоадер - экран загрузки ⚙ 
 
 Источник: видео "Как сделать прелоадер? ► CSS/JS" 
 https://vkvideo.ru/video-101965347_456276135?entrypoint=list_all
+
+![2025-01-05_22-07-37](https://github.com/user-attachments/assets/8b4b0054-0c7d-4614-bb7d-784c700b2ec5)
+
+
+https://github.com/user-attachments/assets/0275f0a4-bcb4-47f0-bc94-4f0029f05b6b
+
+
 
 1. создаем создаем файлы index.html, style.css (в папке css), script.js (в папке js) в папке проекта.
    Скачиваем готовые шаблоны изображений (в папку img) и файл js (положить в папку js) и вставляем в папку проекта:
@@ -111,6 +118,9 @@ html,body{
 }
 ```
 
+![7](https://github.com/user-attachments/assets/897ebec0-b100-4262-9352-90e357c7d6bd)
+
+
 8. в файле style.css создаем анимацию прелоадера
 
 ```css
@@ -142,6 +152,12 @@ visibility: visible;
    visibility: hidden;
 }
 ```
+
+
+
+https://github.com/user-attachments/assets/dcf890c4-5e19-4b75-b52d-e130bac2b2e9
+
+
 
 9. в файле script.js чтобы прелоадер загружался первым
 
@@ -294,6 +310,10 @@ function image_loaded() { // При загрузке до 100%, окно заг�
 14. Чтобы увидеть корректность работы прелоадера - заходим в DevTools (F12) 
 на странице с проектом --> Network --> Throttling --> Slow 4G. Также ставим галочку "disable cache" (отключить кэш).
 
+
+![14](https://github.com/user-attachments/assets/fac94926-74fd-4f45-90aa-dee0a111af85)
+
+
 # Итог
 
 1. index.html
@@ -339,6 +359,9 @@ function image_loaded() { // При загрузке до 100%, окно заг�
 </html>
 ```
 
+![2025-01-05_22-14-38](https://github.com/user-attachments/assets/4be6f02f-9d41-47c2-9c59-9ceb9b2f5de6)
+
+
 2. script.js
 
 ```js
@@ -381,6 +404,9 @@ function image_loaded() { // При загрузке до 100%, окно заг�
    }
 }
 ```
+
+![2025-01-05_22-15-29](https://github.com/user-attachments/assets/234d32a3-906b-4361-a35d-b9ef2e7441a6)
+
 
 3. style.css
 
@@ -480,3 +506,7 @@ html,body{
    }
 }
 ```
+
+![2025-01-05_22-15-09](https://github.com/user-attachments/assets/570e10f7-c843-430f-a3b1-9733aa0fec63)
+![2025-01-05_22-14-54](https://github.com/user-attachments/assets/ef5f0870-c7c8-4640-ab47-ab7251407670)
+
