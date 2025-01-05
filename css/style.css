@@ -38,7 +38,7 @@ html,body{
         height: 75px;
         line-height: 75px;
         text-align: center;
-        position: fixed; /* Разместить по центру прелоадер */
+        position: absolute; /* Разместить по центру прелоадер */
         left: 50%;
         top: 35%; /* Можно по центру (50%), но будет перекрывать собой гифку */
         transform: translate(-50%, -50%);

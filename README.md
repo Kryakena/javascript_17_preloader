@@ -277,3 +277,206 @@ function image_loaded() { // При загрузке до 100%, окно заг�
    }
 }
 ```
+
+13. в файле index.html для наглядности прелоадера добавляем любые изображения в раздел body (для них создаем папку img)
+
+```html
+<div class="gallery">
+   <ul class="images">
+      <li><img src="img/1.jpg"></li>
+      <li><img src="img/2.jpg"></li>
+      <li><img src="img/3.jpg"></li>
+      <li><img src="img/4.jpg"></li>
+   </ul>
+</div>
+```
+
+14. Чтобы увидеть корректность работы прелоадера - заходим в DevTools (F12) 
+на странице с проектом --> Network --> Throttling --> Slow 4G. Также ставим галочку "disable cache" (отключить кэш).
+
+# Итог
+
+1. index.html
+
+```html
+<!-- Сообщаем браузеру, как стоит обрабатывать эту страницу -->
+<!DOCTYPE html>
+<!-- Оболочка документа, указываем язык содержимого -->
+<html lang="ru">
+<!-- Заголовок страницы, контейнер для других важных данных (не отображается) -->
+<head>
+   <!-- Заголовок страницы в браузере -->
+   <title>Прелоадер</title>
+   <!-- Подключаем CSS -->
+   <link rel="stylesheet" href="css/style.css">
+   <!-- Кодировка страницы -->
+   <meta charset="utf-8">
+   <!-- Адаптив -->
+   <meta name="viewport" content="width=device-width">
+</head>
+<!-- Отображаемое тело страницы -->
+<body>
+<!-- Оболочка для демонстрации -->
+<div class="wrapper">
+   <!-- Контент -->
+   <div id="page-preloader" class="preloader-2">
+      <div class="loader"><span id="load_perc">0%</span></div>
+   </div>
+   <div class="gallery">
+      <ul class="images">
+         <li><img src="img/1.jpg"></li>
+         <li><img src="img/2.jpg"></li>
+         <li><img src="img/3.jpg"></li>
+         <li><img src="img/4.jpg"></li>
+      </ul>
+   </div>
+   <!-- Подключаем jQuery -->
+   <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+   <!-- Подключаем файл JS скриптов -->
+   <script src="js/script.js"></script>
+</div>
+</body>
+</html>
+```
+
+2. script.js
+
+```js
+//document.body.onload = function() {
+//    setTimeout(function() {
+//        var preloader = document.getElementById('page-preloader');
+//        // Нужен идентификатор, поэтому в html добавляем его к div preloader
+//        if (preloader.classList.contains('done')) {
+//            // Если в preloader в его classList нет класса done, то мы его добавляем
+//            preloader.classList.add('done');
+//        }
+//    }, 1000); // Чтобы грузилось быстрее - 1 секунда
+//}
+
+var
+        images = document.images,
+        images_total_count = images.length,
+        images_loaded_count = 0,
+        preloader = document.getElementById('page-preloader'),
+        perc_display = document.getElementById('load_perc');
+
+for (var i = 0; i < images_total_count; i++ ) {
+   image_clone = new Image();
+   image_clone.onload = image_loaded;
+   image_clone.onerror = image_loaded;
+   image_clone.src = images[i].src;
+}
+
+function image_loaded() { // При загрузке до 100%, окно загрузки исчезнет
+   images_loaded_count++;
+   perc_display.innerHTML = (( ( 100 / images_total_count ) * images_loaded_count ) << 0) + '%';
+   // Чтобы при делении не было дробных чисел
+
+   if( images_loaded_count >= images_total_count ) {
+      setTimeout(function() {
+         if( !preloader.classList.contains('done')) {
+            preloader.classList.add('done');
+         }
+      }, 1000);
+   }
+}
+```
+
+3. style.css
+
+```css
+/* Обнуление */
+*,*:before,*:after{
+   padding: 0;
+   margin: 0;
+   border: 0;
+   box-sizing: border-box;
+}
+/* Стили для демонстрации */
+html,body{
+   height: 100%;
+   background-color: #333;
+   font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+   color: #fff;
+   font-size: 25px;
+}
+.wrapper{
+   height: 100%;
+   padding: 50px;
+}
+/* Основные стили */
+
+.preloader-2{
+   position: fixed; /* Чтобы окно загрузки распологалось в зависимости от страницы, а не от элементов на странице */
+   left: 0;
+   top: 0;
+   width: 100%; /* Чтобы окно загрузки занимало всю ширину и высоту нашего окна */
+   height: 100%;
+   background: black;
+   z-index: 3; /* Чтобы не было видно наших элементов. Можно повысить z-index, если не перекрывает элементы */
+   transition: 1s all; /* 1 секунда на все свойства */
+   opacity: 1;
+   visibility: visible;
+   background: url("../img/loading.gif") center center no-repeat; /* Чтобы не повторялся и централизовывался */
+   background-color: #1E1E1E; /* Фон вокруг гифки */
+
+   .loader{ /* Будет простая анимация, пока страница не загрузится */
+      width: 100%; /* ЧТобы влезли 100% */
+      height: 75px;
+      line-height: 75px;
+      text-align: center;
+      position: absolute; /* Разместить по центру прелоадер */
+      left: 50%;
+      top: 35%; /* Можно по центру (50%), но будет перекрывать собой гифку */
+      transform: translate(-50%, -50%);
+      font-size: 75px; /* Размер шрифта */
+   }
+
+   &.done{  /* Чтобы при загрузке страницы, гифка с прелоадером исчезла */
+      opacity: 0;
+      visibility: hidden;
+   }
+}
+
+.preloader{
+   position: fixed; /* Чтобы окно загрузки распологалось в зависимости от страницы, а не от элементов на странице */
+   left: 0;
+   top: 0;
+   width: 100%; /* Чтобы окно загрузки занимало всю ширину и высоту нашего окна */
+   height: 100%;
+   background: black;
+   z-index: 3; /* Чтобы не было видно наших элементов. Можно повысить z-index, если не перекрывает элементы */
+   transition: 1s all; /* 1 секунда на все свойства */
+   opacity: 1;
+   visibility: visible;
+
+   .loader{ /* Будет простая анимация, пока страница не загрузится */
+      width: 75px;
+      height: 75px;
+      border: 10px solid #fff;
+      border-radius: 50%; /* Круглой формоы */
+      border-top-color: blue;
+      position: absolute; /* Разместить по центру прелоадер */
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      animation: spin 2s linear infinite;
+      /* Анимация: название spin, время анимации 2 секунды (если меньше - ускорится анимация) */
+      /* infinite - количество воспроизведений, linear - тайм-функция */
+   }
+
+   &.done{  /* Чтобы при загрузке страницы, гифка с прелоадером исчезла */
+      opacity: 0;
+      visibility: hidden;
+   }
+}
+
+@keyframes spin {
+   from {
+      transform: translate(-50%, -50%) rotate(0deg);
+   }
+   to {
+      transform: translate(-50%, -50%) rotate(360deg);
+   }
+}
+```
